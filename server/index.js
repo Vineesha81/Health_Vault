@@ -350,7 +350,7 @@ app.post('/api/blood-requests', async (req, res) => {
         });
 
         // 2. Call Python Script
-        const pythonCommand = `python "${path.join(__dirname, 'priority_engine', 'cli.py')}" "${input.replace(/"/g, '\\"')}"`;
+        const pythonCommand = `python3 "${path.join(__dirname, 'priority_engine', 'cli.py')}" "${input.replace(/"/g, '\\"')}"`;
 
         exec(pythonCommand, async (error, stdout, stderr) => {
             if (error) {
