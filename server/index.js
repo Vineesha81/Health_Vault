@@ -36,9 +36,10 @@ app.use((req, res, next) => {
 const connectDB = async () => {
     let mongoUri = process.env.MONGODB_URI;
 
-    // Check if we should use in-memory DB (default URI or no URI)
-    if (!mongoUri || mongoUri.includes('localhost:27017')) {
+    // Check if we should use in-memory DB (ONLY in local development if no URI provided)
+    if (!mongoUri && process.env.NODE_ENV !== 'production') {
         try {
+            console.log('🏗️ No MONGODB_URI found, attempting to start In-Memory MongoDB...');
             const { MongoMemoryServer } = require('mongodb-memory-server');
             const mongod = await MongoMemoryServer.create();
             mongoUri = mongod.getUri();
@@ -48,9 +49,15 @@ const connectDB = async () => {
         }
     }
 
+    if (!mongoUri) {
+        console.error('❌ CRITICAL ERROR: MONGODB_URI environment variable is not defined!');
+        console.error('Please set MONGODB_URI in your deployment dashboard (Railway/Koyeb/Render).');
+        return;
+    }
+
     try {
         await mongoose.connect(mongoUri);
-        console.log('✅ MongoDB Connected');
+        console.log('✅ MongoDB Connected Successfully');
     } catch (err) {
         console.error('❌ MongoDB Connection Error:', err);
     }
