@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.git
+server/node_modules
+server/priority_engine/__pycache__
+*.log
+.DS_Store
