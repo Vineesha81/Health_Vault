@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const { exec } = require('child_process');
-require('dotenv').config(); // Load from root or use Render's env vars
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const twilio = require('twilio');
 const mongoose = require('mongoose');
 
